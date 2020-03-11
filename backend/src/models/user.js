@@ -43,8 +43,10 @@ const userSchema = new mongoose.Schema({
     }
   },
   tokens: [{
-    token: String,
-    required: true
+    token: {
+      type: String,
+      required: true
+    }
   }],
   photo: {
     type: Buffer
