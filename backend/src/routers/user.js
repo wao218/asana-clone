@@ -82,4 +82,17 @@ router.patch('/users/me', auth, async (req, res) => {
   }
 });
 
+// Deleting a user
+router.delete('/users/me', auth, async (req, res) => {
+  try {
+    await req.user.remove();
+    // sendCancellationEmail(req.user.email, req.user.name);
+    res.send(req.user);
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
+
+
 module.exports = router;
