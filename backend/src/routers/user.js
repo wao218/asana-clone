@@ -93,6 +93,30 @@ router.delete('/users/me', auth, async (req, res) => {
   }
 });
 
+// File upload
+const upload = multer({
+  limits: {
+    fileSize: 1000000
+  },
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      cb(new Error('Please upload a jpg, jpeg, or png image file'));
+    }
+    cb(undefined, true);
+  }
+});
+
+// Upload user avatar
+router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
+  const buffer = await sharp(req.file.buffer).resize({
+  width: 250, height: 250 }).png().toBuffer();
+  req.user.avatar = buffer;
+  await req.user.save();
+  res.send();
+}, (error, req, res, next) => {
+  res.status(400).send({ error: error.message });
+});
+
 
 
 module.exports = router;
