@@ -41,6 +41,18 @@ const userSchema = new mongoose.Schema({
   }],
   avatar: {
     type: Buffer
+  },
+  pronouns: {
+    type: String
+  },
+  role: {
+    type: String
+  },
+  department: {
+    type: String
+  },
+  about: {
+    type: String
   }
 },
 {

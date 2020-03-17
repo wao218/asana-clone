@@ -4,7 +4,18 @@ const auth = require('../middleware/auth');
 const router = new express.Router();
 
 // Create an Workspace
-router.post('/workspace')
+router.post('/workspace', auth, async (req, res) => {
+  const workspace = new Workspace({
+    ...req.body,
+  });
+
+  try {
+    await workspace.save();
+    res.status(201).send(workspace);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
 // Read an Workspace
 
 // Update an Workspace
