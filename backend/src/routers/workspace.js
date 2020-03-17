@@ -70,6 +70,17 @@ router.patch('/workspaces/:id', auth, async (req, res) => {
   }
 });
 // Delete a Workspace
+router.delete('/workspaces/:id', auth, async (req, res) => {
+  try {
+    const workspace = await Workspace.findOneAndDelete({ _id: req.params.id });
+    if (!workspace) {
+      return res.status(404).send();
+    }
 
+    res.send(workspace);
+  } catch (e) {
+    res.status(500).send();
+  }
+});
 
 module.exports = router;
