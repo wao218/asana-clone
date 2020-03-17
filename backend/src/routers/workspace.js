@@ -28,6 +28,20 @@ router.get('/workspaces', auth, async (req, res) => {
 });
 
 // Read an individual Workspace
+router.get('/workspaces/:id', auth, async (req, res) => {
+  const _id = req.params.id;
+
+  try {
+    const workspace = await Workspace.findOne({ _id });
+    if (!workspace) {
+      return res.status(404).send();
+    }
+
+    res.send(workspace);
+  } catch (e) {
+    res.send(500).send();
+  }
+});
 
 // Update an Workspace
 
