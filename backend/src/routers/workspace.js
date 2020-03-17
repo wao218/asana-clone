@@ -43,9 +43,33 @@ router.get('/workspaces/:id', auth, async (req, res) => {
   }
 });
 
-// Update an Workspace
+// Update a Workspace
+router.patch('/workspaces/:id', auth, async (req, res) => {
+  const updates = Object.keys(req.body);
+  const allowedUpdates = ['name', 'is_organization'];
+  const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
-// Delete an Workspace
+  if (!isValidOperation) {
+    return res.status(400).send({
+      error: 'Invalid update!'
+    });
+  }
+
+  try {
+    const workspace = await Workspace.findOne({ _id: req.params.id });
+
+    if (!workspace) {
+      return res.status(400).send();
+    }
+
+    updates.forEach((update) => workspace[update] = req.body[update]);
+    await workspace.save();
+    res.send(workspace);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+// Delete a Workspace
 
 
 module.exports = router;
