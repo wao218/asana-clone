@@ -12,6 +12,11 @@ const teamSchema = new mongoose.Schema({
     required: true,
     ref: 'Workspace'
   },
+  owner_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'User'
+  },
   team_members: [
     {
       email: {

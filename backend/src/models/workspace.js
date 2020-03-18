@@ -10,6 +10,11 @@ const workspaceSchema = new mongoose.Schema({
   is_organization: {
     type: Boolean,
     default: false
+  },
+  owner_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'User'
   }
 }, {
   timestamps: true
@@ -23,7 +28,7 @@ workspaceSchema.virtual('teams', {
 });
 
 // Delete workspace teams when workspace is removed
-workspaceSchema.pre('remove', async function (next) => {
+workspaceSchema.pre('remove', async function (next) {
   const workspace = this;
   await Team.deleteMany({ workspace_id: workspace._id });
   next();

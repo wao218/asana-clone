@@ -7,6 +7,7 @@ const router = new express.Router();
 router.post('/workspaces', auth, async (req, res) => {
   const workspace = new Workspace({
     ...req.body,
+    owner_id: req.user._id
   });
 
   try {

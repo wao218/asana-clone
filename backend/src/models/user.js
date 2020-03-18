@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const Workspace = require('./workspace');
+const Team = require('./team');
 
 
 const userSchema = new mongoose.Schema({
@@ -74,6 +76,20 @@ userSchema.virtual('tasks', {
 // Connect user to project
 userSchema.virtual('projects', {
   ref: 'Project',
+  localField: '_id',
+  foreignField: 'owner_id'
+});
+
+// Connect user to workspace
+userSchema.virtual('workspaces', {
+  ref: 'Workspace',
+  localField: '_id',
+  foreignField: 'owner_id'
+});
+
+// Connect user to team
+userSchema.virtual('teams', {
+  ref: 'Team',
   localField: '_id',
   foreignField: 'owner_id'
 });
