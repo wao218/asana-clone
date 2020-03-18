@@ -76,7 +76,7 @@ router.delete('/workspaces/:id', auth, async (req, res) => {
     if (!workspace) {
       return res.status(404).send();
     }
-
+    await req.workspace.remove();
     res.send(workspace);
   } catch (e) {
     res.status(500).send();
