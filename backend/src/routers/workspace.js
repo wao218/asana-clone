@@ -40,7 +40,7 @@ router.get('/workspaces/:id', auth, async (req, res) => {
 
     res.send(workspace);
   } catch (e) {
-    res.send(500).send();
+    res.status(500).send();
   }
 });
 

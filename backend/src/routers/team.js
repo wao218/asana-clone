@@ -29,6 +29,20 @@ router.post('/teams/:id', auth, async (req, res) => {
 // Reading all teams
 
 // Reading a single team
+router.get('/teams/:id', auth, async (req, res) => {
+  const _id = req.params.id;
+
+  try {
+    const team = await Team.findOne({ _id });
+    if (!team) {
+      return res.status(404).send();
+    }
+
+    res.send(team);
+  } catch (e) {
+    res.status(500).send();
+  }
+});
 
 // Updating a team
 router.patch('/teams/:id', auth, async (req, res) => {
