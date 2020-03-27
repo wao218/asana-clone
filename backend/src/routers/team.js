@@ -1,20 +1,22 @@
 const express = require('express');
 const Team = require('../models/team');
+const Workspace = require('../models/workspace');
 const auth = require('../middleware/auth');
 const router = new express.Router();
 
 // Creating a new team
-router.post('/teams', auth, async (req, res) => {
-  await req.user.populate('workspaces').execPopulate();
+router.post('/teams/:id', auth, async (req, res) => {
+  // await req.user.populate('workspaces').execPopulate();
+  const workspace = await Workspace.findById(req.params.id);
+  if (!workspace) {
+    throw new Error();
+  }
 
-
-  // Need to associate the team to the correct workspace if user has more than one workspace
   const team = new Team({
     ...req.body,
-    workspace_id: req.user.workspaces[0]._id,
+    workspace_id: workspace._id,
     owner_id: req.user._id
   });
-
 
   try {
     await team.save();
@@ -31,5 +33,18 @@ router.post('/teams', auth, async (req, res) => {
 // Updating a team
 
 // Deleting a team
+// Need to add pre script to delete all projects
+router.delete('/teams/:id', auth, async (req, res) => {
+  try {
+    const team = await Team.findOneAndDelete({ _id: req.params.id });
+    if (!team) {
+      return res.status(404).send();
+    }
+    // await req.team.remove();
+    res.send(team);
+  } catch (e) {
+    res.status(500).send();
+  }
+});
 
 module.exports = router;
