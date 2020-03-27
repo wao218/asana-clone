@@ -31,6 +31,31 @@ router.post('/teams/:id', auth, async (req, res) => {
 // Reading a single team
 
 // Updating a team
+router.patch('/teams/:id', auth, async (req, res) => {
+  const updates = Object.keys(req.body);
+  const allowedUpdates = ['name', 'team_members'];
+  const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+
+  if (!isValidOperation) {
+    return res.status(400).send({
+      error: 'Invalid update!'
+    });
+  }
+
+  try {
+    const team = await Team.findOne({ _id: req.params.id });
+
+    if (!team) {
+      return res.status(400).send();
+    }
+
+    updates.forEach((update) => team[update] = req.body[update]);
+    await team.save();
+    res.send(team);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
 
 // Deleting a team
 // Need to add pre script to delete all projects
