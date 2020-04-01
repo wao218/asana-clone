@@ -36,7 +36,7 @@ workspaceSchema.virtual('project', {
   foreignField: 'workspace_id'
 });
 
-// Delete workspace teams when workspace is removed
+// Delete workspace teams, tasks, and projects when workspace is removed
 workspaceSchema.pre('remove', async function (next) {
   const workspace = this;
   await Team.deleteMany({ workspace_id: workspace._id });

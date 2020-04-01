@@ -153,6 +153,7 @@ userSchema.pre('remove', async function (next) {
   // await Task.deleteMany({ owner: user._id });
   await Workspace.deleteMany({ owner_id: user._id});
   await Team.deleteMany({ owner_id: user._id});
+  await Project.deleteMany({ owner_id: user._id});
   next();
 });
 

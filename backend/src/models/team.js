@@ -46,6 +46,14 @@ teamSchema.virtual('projects', {
   foreignField: 'team_id'
 });
 
+
+teamSchema.pre('remove', async function (next) {
+  const team = this;
+  await Project.deleteMany({ team_id: team_id });
+  
+
+  next();
+});
 const Teams = mongoose.model('Team', teamSchema);
 
 module.exports = Teams;
