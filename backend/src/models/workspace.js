@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Team = require('./team');
+const Task = require('./task');
+const Project = require('./project');
 
 const workspaceSchema = new mongoose.Schema({
   name: {
@@ -31,6 +33,8 @@ workspaceSchema.virtual('teams', {
 workspaceSchema.pre('remove', async function (next) {
   const workspace = this;
   await Team.deleteMany({ workspace_id: workspace._id });
+  await Project.deleteMany({ workspace_id: workspace._id });
+  await Tasks.deleteMany({ workspace_id: workspace._id});
   next();
 });
 

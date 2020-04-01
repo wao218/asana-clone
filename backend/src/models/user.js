@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const Task = require('./task');
 const Workspace = require('./workspace');
 const Team = require('./team');
 
@@ -147,11 +148,13 @@ userSchema.pre('save', async function (next) {
 });
 
 // Delete user tasks when user is removed
-// userSchema.pre('remove', async function (next) {
-//   const user = this;
-//   await Task.deleteMany({ owner: user._id });
-//   next();
-// });
+userSchema.pre('remove', async function (next) {
+  const user = this;
+  // await Task.deleteMany({ owner: user._id });
+  await Workspace.deleteMany({ owner_id: user._id});
+  await Team.deleteMany({ owner_id: user._id});
+  next();
+});
 
 const User = mongoose.model('User', userSchema);
 
