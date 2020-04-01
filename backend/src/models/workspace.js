@@ -29,6 +29,13 @@ workspaceSchema.virtual('teams', {
   foreignField: 'workspace_id'
 });
 
+// Connect workspace to project
+workspaceSchema.virtual('project', {
+  ref: 'Project',
+  localField: '_id',
+  foreignField: 'workspace_id'
+});
+
 // Delete workspace teams when workspace is removed
 workspaceSchema.pre('remove', async function (next) {
   const workspace = this;

@@ -39,6 +39,13 @@ const teamSchema = new mongoose.Schema({
   timestamps: true
 });
 
+// Connect team to project
+teamSchema.virtual('projects', {
+  ref: 'Project',
+  localField: '_id',
+  foreignField: 'team_id'
+});
+
 const Teams = mongoose.model('Team', teamSchema);
 
 module.exports = Teams;
